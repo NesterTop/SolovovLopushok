@@ -16,7 +16,7 @@ namespace SolovovLopushok
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormAdd());
+            Application.Run(new MainForm());
         }
     }
 }
