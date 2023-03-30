@@ -23,19 +23,23 @@ namespace SolovovLopushok
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            using(DataBase db = new DataBase())
-            {
-                products = db.ExecuteSql("select * from Product");
-                propuctType = db.ExecuteSql($"select Title from ProductType where id = '{products.Rows[page].ItemArray[5].ToString()}'");
-                productTypes = db.ExecuteSql("select * from ProductType");
-            }
 
             foreach (DataRow row in productTypes.Rows)
             {
                 
                 comboBox1.Items.Add(row.ItemArray[1]);
             }
+            
+        }
 
+        public void UpdateData()
+        {
+            using (DataBase db = new DataBase())
+            {
+                products = db.ExecuteSql("select * from Product");
+                propuctType = db.ExecuteSql($"select Title from ProductType where id = '{products.Rows[page].ItemArray[5].ToString()}'");
+                productTypes = db.ExecuteSql("select * from ProductType");
+            }
             SelectPageData();
         }
 
@@ -97,6 +101,7 @@ namespace SolovovLopushok
             {
                 db.ExecuteNonQuery($"delete from product where ArticleNumber = '{products.Rows[page].ItemArray[2]}'");
             }
+            UpdateData();
         }
 
         private void buttonUpdate_Click(object sender, EventArgs e)

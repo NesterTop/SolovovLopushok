@@ -25,15 +25,20 @@ namespace SolovovLopushok
             {
                 using (DataBase db = new DataBase())
                 {
-                    db.ExecuteNonQuery($"update product set MinCostForAgent = {double.Parse(textBox1.Text)} where '{form.products.Rows[form.page].ItemArray[2]}'");
+                    db.ExecuteNonQuery($"update product set MinCostForAgent = {(object)textBox1.Text} where articlenumber = '{form.products.Rows[form.page].ItemArray[2]}'");
                 }
             }
             catch
             {
                 MessageBox.Show("Не удалось поменять стоимость продукции");
             }
-            form.SelectPageData();
+            form.UpdateData();
             this.Close();
+        }
+
+        private void UpdateForm_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
