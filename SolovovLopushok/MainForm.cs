@@ -23,12 +23,8 @@ namespace SolovovLopushok
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-
-            foreach (DataRow row in productTypes.Rows)
-            {
-                
-                comboBox1.Items.Add(row.ItemArray[1]);
-            }
+            UpdateData();
+            
             
         }
 
@@ -45,12 +41,12 @@ namespace SolovovLopushok
 
         public void SelectPageData()
         {
-            string path = @"C:\Users\student\Desktop\Промежуточный контроль\Сессия 1\";
+            string path = @"C:\Users\solov\Desktop\Промежуточный контроль\Сессия 1\";
 
             string cpath = path + products.Rows[page].ItemArray[4].ToString();
             textBoxTitle.Text = products.Rows[page].ItemArray[1].ToString();
             textBoxCost.Text = products.Rows[page].ItemArray[3].ToString();
-            comboBox1.SelectedItem = propuctType.Rows[0].ItemArray[0].ToString();
+            textBoxProductType.Text = propuctType.Rows[0].ItemArray[0].ToString();
 
             try
             {
@@ -70,7 +66,7 @@ namespace SolovovLopushok
                 if (page < products.Rows.Count)
                 {
                     page += 1;
-                    SelectPageData();
+                    UpdateData();
                 }
             }
             catch
@@ -86,7 +82,7 @@ namespace SolovovLopushok
                 if (page > 0)
                 {
                     page -= 1;
-                    SelectPageData();
+                    UpdateData();
                 }
             }
             catch
