@@ -35,23 +35,31 @@ namespace SolovovLopushok
             }
         }
 
-        private void button_insert_Click(object sender, EventArgs e)
+        public bool InsertData()
         {
-            string title = textBox_title.Text;
-            string article = textBox_artic_num.Text;
-            double mincost = Convert.ToDouble(textBox_min_cost_for_ag.Text);
-            string image = textBox_image_path.Text;
-            int pers_count = Convert.ToInt32(textBox_prod_per_count.Text);
-            int workshop_num = Convert.ToInt32(textBox_prod_workshop_num.Text);
             try
             {
+                string title = textBox_title.Text;
+                string article = textBox_artic_num.Text;
+                double mincost = Convert.ToDouble(textBox_min_cost_for_ag.Text);
+                string image = textBox_image_path.Text;
+                int pers_count = Convert.ToInt32(textBox_prod_per_count.Text);
+                int workshop_num = Convert.ToInt32(textBox_prod_workshop_num.Text);
                 db.ExecuteNonQuery($"insert into Product values ('{title}', '{article}', {mincost}, '{image}', (select id from producttype where title = '{comboBox_product_type.SelectedItem}'), {pers_count}, {workshop_num});");
                 MessageBox.Show("Продукт добавлен");
+                return true;
             }
             catch
             {
                 MessageBox.Show("Продукт неудалось добавить");
+                return false;
             }
+        }
+
+        private void button_insert_Click(object sender, EventArgs e)
+        {
+
+            InsertData();
         }
     }
 }

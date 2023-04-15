@@ -16,6 +16,7 @@ namespace SolovovLopushok
         public DataTable products;
         DataTable propuctType;
         DataTable productTypes;
+        
         public MainForm()
         {
             InitializeComponent();
@@ -24,42 +25,53 @@ namespace SolovovLopushok
         private void MainForm_Load(object sender, EventArgs e)
         {
             UpdateData();
-            
-            
         }
 
-        public void UpdateData()
+        public bool UpdateData()
         {
-            using (DataBase db = new DataBase())
-            {
-                products = db.ExecuteSql("select * from Product");
-                propuctType = db.ExecuteSql($"select Title from ProductType where id = '{products.Rows[page].ItemArray[5].ToString()}'");
-                productTypes = db.ExecuteSql("select * from ProductType");
-            }
-            SelectPageData();
-        }
-
-        public void SelectPageData()
-        {
-            string path = @"C:\Users\solov\Desktop\Промежуточный контроль\Сессия 1\";
-
-            string cpath = path + products.Rows[page].ItemArray[4].ToString();
-            textBoxTitle.Text = products.Rows[page].ItemArray[1].ToString();
-            textBoxCost.Text = products.Rows[page].ItemArray[3].ToString();
-            textBoxProductType.Text = propuctType.Rows[0].ItemArray[0].ToString();
-
             try
             {
+                using (DataBase db = new DataBase())
+                {
+                    products = db.ExecuteSql("select * from Product");
+                    propuctType = db.ExecuteSql($"select Title from ProductType where id = '{products.Rows[page].ItemArray[5].ToString()}'");
+                    productTypes = db.ExecuteSql("select * from ProductType");
+                }
+                SelectPageData();
+
+                return true;
+            }
+
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool SelectPageData()
+        {
+            string path = @"C:\Users\solov\Desktop\Промежуточный контроль\Сессия 1\";
+            string cpath = "";
+            try
+            {
+                cpath = path + products.Rows[page].ItemArray[4].ToString();
+                textBoxTitle.Text = products.Rows[page].ItemArray[1].ToString();
+                textBoxCost.Text = products.Rows[page].ItemArray[3].ToString();
+                textBoxProductType.Text = propuctType.Rows[0].ItemArray[0].ToString();
                 pictureBox1.Image = Image.FromFile(cpath);
+
+                return true;
             }
             catch
             {
                 cpath = path + @"products\picture.png";
                 pictureBox1.Image = Image.FromFile(cpath);
+
+                return false;
             }
         }
 
-        private void buttonGo_Click(object sender, EventArgs e)
+        public bool GoPage()
         {
             try
             {
@@ -68,14 +80,20 @@ namespace SolovovLopushok
                     page += 1;
                     UpdateData();
                 }
+                return true;
             }
             catch
             {
-
+                return false;
             }
         }
 
-        private void buttonBack_Click(object sender, EventArgs e)
+        private void buttonGo_Click(object sender, EventArgs e)
+        {
+            GoPage();
+        }
+
+        public bool BackPage()
         {
             try
             {
@@ -84,30 +102,79 @@ namespace SolovovLopushok
                     page -= 1;
                     UpdateData();
                 }
+                return true;
             }
             catch
             {
+                return false;
+            }
+        }
 
+        private void buttonBack_Click(object sender, EventArgs e)
+        {
+            BackPage();
+        }
+
+        public bool DeleteData()
+        {
+            try
+            {
+                using (DataBase db = new DataBase())
+                {
+                    db.ExecuteNonQuery($"delete from product where ArticleNumber = '{products.Rows[page].ItemArray[2]}'");
+                }
+                UpdateData();
+                
+                return true;
+            }
+
+            catch
+            {
+                return false;
             }
         }
 
         private void buttonDelete_Click(object sender, EventArgs e)
         {
-            using(DataBase db = new DataBase())
+            DeleteData();
+        }
+
+        public bool ShowUpdateForm()
+        {
+            try
             {
-                db.ExecuteNonQuery($"delete from product where ArticleNumber = '{products.Rows[page].ItemArray[2]}'");
+                new UpdateForm(this).Show();
+                return true;
             }
-            UpdateData();
+
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool ShowAddForm()
+        {
+            try
+            {
+                new FormAdd().Show();
+                return true;
+            }
+
+            catch
+            {
+                return false;
+            }
         }
 
         private void buttonUpdate_Click(object sender, EventArgs e)
         {
-            new UpdateForm(this).Show();
+            ShowUpdateForm();
         }
 
         private void buttonAdd_Click(object sender, EventArgs e)
         {
-            new FormAdd().Show();
+            ShowAddForm();
         }
     }
 }

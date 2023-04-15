@@ -47,13 +47,27 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataBaseTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="MainFormTest.cs" />
+    <Compile Include="AddFormTest.cs" />
+    <Compile Include="CalculationTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SolovovLopushok\SolovovLopushok.csproj">
+      <Project>{e9a5a683-c078-42f3-adbc-c5e640b2bfc2}</Project>
+      <Name>SolovovLopushok</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WSUniversalLib\WSUniversalLib.csproj">
+      <Project>{287ca47a-ac39-435d-a1a0-ab6322144378}</Project>
+      <Name>WSUniversalLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

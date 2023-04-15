@@ -10,8 +10,10 @@ namespace SolovovLopushok
 {
     public class DataBase : IDisposable
     {
-        private string _connectionString = "Server=db.edu.cchgeu.ru;DataBase=193_Solovov;User=193_Solovov;Password=Qq123123";
+        private string _connectionString = @"Data Source=DESKTOP-A9MP2FF\SQLEXPRESS;Initial Catalog=193_Solovov;Integrated Security=True";
         private SqlConnection _connection;
+
+        public bool IsConnected { get; private set; }
 
         public DataBase()
         {
@@ -22,11 +24,13 @@ namespace SolovovLopushok
         private void OpenConnection()
         {
             _connection.Open();
+            IsConnected = true;
         }
 
         private void CloseConnection()
         {
             _connection.Close();
+            IsConnected = false;
         }
 
         public DataTable ExecuteSql(string sql)
@@ -38,10 +42,22 @@ namespace SolovovLopushok
             return table;
         }
 
-        public void ExecuteNonQuery(string sql)
+        public bool ExecuteNonQuery(string sql)
         {
-            SqlCommand command = new SqlCommand(sql, _connection);
-            command.ExecuteNonQuery();
+            bool result;
+            
+            try
+            {
+                SqlCommand command = new SqlCommand(sql, _connection);
+                command.ExecuteNonQuery();
+                result = true;
+            }
+            catch
+            {
+                result = false;
+            }
+
+            return result;
         }
 
         public void Dispose()
